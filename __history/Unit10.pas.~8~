@@ -1,0 +1,51 @@
+unit Unit10;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Vcl.Menus,
+  Vcl.Mask, Vcl.DBCtrls, Data.DB;
+
+type
+  TForm10 = class(TForm)
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Button1: TButton;
+    Edit1: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
+    Edit4: TEdit;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form10: TForm10;
+
+implementation
+
+{$R *.dfm}
+
+uses Unit2;
+
+procedure TForm10.Button1Click(Sender: TObject);
+begin
+  if DataModule2.T_users.State in [dsEdit, dsInsert] then
+    begin // ≈сли находимс€ в режиме редактировани€ или добавлени€ то
+
+        DataModule2.T_users.Edit; //сначала открыть редактирование
+        DataModule2.T_users.fieldbyname('userName').value:= Edit1.Text; //потом изменить
+        DataModule2.T_users.fieldbyname('userPhone').value:= Edit2.Text; //потом изменить
+        DataModule2.T_users.fieldbyname('userMail').value:= Edit3.Text; //потом изменить
+        DataModule2.T_users.fieldbyname('userPas').value:= Edit3.Text; //потом изменить
+        DataModule2.T_users.post; // —охран€ем запись Ќƒ
+    end;
+    Close;
+  end;
+end.

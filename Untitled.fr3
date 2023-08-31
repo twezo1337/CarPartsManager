@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<TfrxReport Version="2022.2.10" DotMatrixReport="False" IniFile="\Software\Fast Reports" PreviewOptions.Buttons="167935" PreviewOptions.Zoom="1" PrintOptions.Printer="Default" PrintOptions.PrintOnSheet="0" ReportOptions.CreateDate="44917,0124538542" ReportOptions.Description.Text="" ReportOptions.LastChange="44917,0177299421" ScriptLanguage="PascalScript" ScriptText.Text="&#13;&#10;begin&#13;&#10;&#13;&#10;end.">
+  <Datasets>
+    <item DataSet="frxDBDataset1" DataSetName="frxDBDataset1"/>
+  </Datasets>
+  <TfrxDataPage Name="Data" HGuides.Text="" VGuides.Text="" Height="1000" Left="0" Top="0" Width="1000"/>
+  <TfrxReportPage Name="Page1" HGuides.Text="" VGuides.Text="" PaperWidth="215,9" PaperHeight="279,4" PaperSize="1" LeftMargin="10" RightMargin="10" TopMargin="10" BottomMargin="10" ColumnWidth="0" ColumnPositions.Text="" Frame.Typ="0" MirrorMode="0">
+    <TfrxReportTitle Name="ReportTitle1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="22,67718" Left="0" Top="18,89765" Width="740,409927">
+      <TfrxMemoView Name="Memo2" AllowVectorExport="True" Left="309,92146" Top="0" Width="109,60637" Height="18,89765" Frame.Typ="0" Text="Список товаров"/>
+    </TfrxReportTitle>
+    <TfrxMasterData Name="MasterData1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="30,23624" Left="0" Top="102,04731" Width="740,409927" ColumnWidth="0" ColumnGap="0" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" RowCount="0">
+      <TfrxMemoView Name="Memo3" AllowVectorExport="True" Left="15,11812" Top="7,55906" Width="158,74026" Height="18,89765" DataField="gcName" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Frame.Typ="0" Text="[frxDBDataset1.&#34;gcName&#34;]"/>
+      <TfrxMemoView Name="Memo4" AllowVectorExport="True" Left="200,31509" Top="7,55906" Width="154,96073" Height="18,89765" DataField="tgName" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Frame.Typ="0" Text="[frxDBDataset1.&#34;tgName&#34;]"/>
+      <TfrxMemoView Name="Memo5" AllowVectorExport="True" Left="389,29159" Top="7,55906" Width="173,85838" Height="18,89765" DataField="markName" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Frame.Typ="0" Text="[frxDBDataset1.&#34;markName&#34;]"/>
+      <TfrxMemoView Name="Memo6" AllowVectorExport="True" Left="642,5201" Top="7,55906" Width="94,48825" Height="18,89765" DataField="gcCost" DataSet="frxDBDataset1" DataSetName="frxDBDataset1" Frame.Typ="0" Text="[frxDBDataset1.&#34;gcCost&#34;]"/>
+    </TfrxMasterData>
+    <TfrxPageFooter Name="PageFooter1" FillType="ftBrush" FillGap.Top="0" FillGap.Left="0" FillGap.Bottom="0" FillGap.Right="0" Frame.Typ="0" Height="22,67718" Left="0" Top="192,75603" Width="740,409927">
+      <TfrxMemoView Name="Memo1" AllowVectorExport="True" Left="664,819327" Top="0" Width="75,5906" Height="18,89765" Frame.Typ="0" HAlign="haRight" Text="[Page#]"/>
+    </TfrxPageFooter>
+  </TfrxReportPage>
+</TfrxReport>

@@ -1,0 +1,201 @@
+unit Unit5;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
+  Vcl.ComCtrls, Vcl.DBCtrls, Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls,
+  Vcl.Samples.Spin, Vcl.ExtDlgs;
+
+type
+  TForm5 = class(TForm)
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    DBGrid1: TDBGrid;
+    DBGrid2: TDBGrid;
+    Label1: TLabel;
+    DBText1: TDBText;
+    InsertEditDeletePanel: TPanel;
+    PanelToInputValues: TPanel;
+    InsertButton: TButton;
+    DeleteButton: TButton;
+    EditButton: TButton;
+    DBLookupComboBox1: TDBLookupComboBox;
+    DBEdit1: TDBEdit;
+    DBEdit2: TDBEdit;
+    DBEdit3: TDBEdit;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    DBLookupComboBox2: TDBLookupComboBox;
+    Label6: TLabel;
+    CancelButton: TButton;
+    Button2: TButton;
+    E_dFormat: TEdit;
+    B_setFormat: TButton;
+    GroupBox1: TGroupBox;
+    ComboCostCondition: TComboBox;
+    SpinCostValue: TSpinEdit;
+    ChkCostFilter: TCheckBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    Goods_Image: TDBImage;
+    OpenPictureDialog1: TOpenPictureDialog;
+    Button1: TButton;
+    Button3: TButton;
+    procedure InsertButtonClick(Sender: TObject);
+    procedure EditButtonClick(Sender: TObject);
+    procedure DeleteButtonClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure CancelButtonClick(Sender: TObject);
+    procedure B_setFormatClick(Sender: TObject);
+    procedure ChkCostFilterClick(Sender: TObject);
+    procedure ComboCostConditionChange(Sender: TObject);
+    procedure SpinCostValueChange(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure B_ClearImageClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form5: TForm5;
+
+implementation
+
+{$R *.dfm}
+
+uses Unit2;
+
+procedure TForm5.Button1Click(Sender: TObject);
+begin
+// Проверка запустилось ли диалоговое окно
+if OpenPictureDialog1.Execute then
+// в случае если пользователь нажал на кнопку Ok
+ // в диалоговом окне проверяем существует ли выбранный файл
+if FileExists(OpenPictureDialog1.FileName) then
+begin
+// загружаем выбранный файл в компонент Goods_Image
+Goods_Image.Picture.LoadFromFile(OpenPictureDialog1.FileName);
+// загружаем выбранный файл в поле gcPhoto
+DataModule2.T_goods_cataloggcPhoto.LoadFromFile
+(OpenPictureDialog1.FileName);
+end;
+end;
+
+procedure TForm5.Button2Click(Sender: TObject);
+begin
+  if DataModule2.T_goods_catalog.State in [dsInsert, dsEdit] then
+ begin
+ // Выполним операцию сохранения
+ DataModule2.T_goods_catalog.Post;
+ // Сделаем видимой панель с кнопками Вставить, Изменить,
+ // Удалить
+ InsertEditDeletePanel.Visible := True;
+ // Сделаем невидимой панель для ввода значения в запись
+ PanelToInputValues.Visible := False;
+ // Включим возможность изменения курсора НД
+ // в компоненте DBGrid1
+ DBGrid1.Enabled := True;
+ end;
+end;
+
+procedure TForm5.B_ClearImageClick(Sender: TObject);
+begin
+  // вызываем метод очистки поля
+  DataModule2.T_goods_cataloggcPhoto.Clear;
+  // назначаем значение nil для картинки
+  Goods_Image.Picture := nil;
+end;
+
+procedure TForm5.B_setFormatClick(Sender: TObject);
+begin
+  DataModule2.Q_v_goods_cataloggcCost.DisplayFormat := E_dFormat.Text;
+end;
+
+procedure TForm5.CancelButtonClick(Sender: TObject);
+begin
+  if DataModule2.T_goods_catalog.State in [dsInsert, dsEdit] then
+ begin
+ // Выполним операцию отмены
+ DataModule2.T_goods_catalog.Cancel;
+ InsertEditDeletePanel.Visible := True;
+ PanelToInputValues.Visible := False;
+ DBGrid1.Enabled := True;
+ end;
+end;
+
+procedure TForm5.ChkCostFilterClick(Sender: TObject);
+var
+ baseSQL, filter_s: string;
+begin
+ DataModule2.Q_v_goods_catalog.Active := False;
+ baseSQL := 'SELECT * FROM view_goods_catalog';
+ DataModule2.Q_v_goods_catalog.SQL.Text := baseSQL;
+ filter_s := '';
+ if ChkCostFilter.Checked then
+ begin
+ // Формирования условия выборки
+ filter_s := ' WHERE gcCost ' + ComboCostCondition.Text + ' ' +
+ IntToStr(SpinCostValue.Value);
+ DataModule2.Q_v_goods_catalog.SQL.Text := baseSQL + filter_s;
+ end;
+ DataModule2.Q_v_goods_catalog.Active := True;
+end;
+
+
+procedure TForm5.ComboCostConditionChange(Sender: TObject);
+begin
+  ChkCostFilterClick(nil);
+end;
+
+procedure TForm5.DeleteButtonClick(Sender: TObject);
+begin
+  if DataModule2.T_goods_catalog.State = dsBrowse then
+ if MessageDlg('Подтвердите удаление записи', mtConfirmation,
+ [mbYes, mbNo], 0) = mrYes then
+ DataModule2.T_goods_catalog.Delete;
+end;
+
+procedure TForm5.EditButtonClick(Sender: TObject);
+begin
+  if DataModule2.T_goods_catalog.State = dsBrowse then
+ begin
+ DBGrid1.Enabled := False;
+ InsertEditDeletePanel.Visible := False;
+ PanelToInputValues.Visible := True;
+ // Переведем НД в режим редактирования записи, используя
+ // метод Edit
+ DataModule2.T_goods_catalog.Edit;
+ end;
+end;
+
+procedure TForm5.InsertButtonClick(Sender: TObject);
+begin
+   if DataModule2.T_goods_catalog.State = dsBrowse then
+ begin
+ Goods_Image.Picture := nil;
+ // Отключим возможность изменения курсора НД в компоненте DBGrid1
+ DBGrid1.Enabled := False;
+ // Сделаем невидимой панель с кнопками Вставить, Изменить,
+ // Удалить
+ InsertEditDeletePanel.Visible := False;
+ // Сделаем видимой панель для ввода значения в запись
+ PanelToInputValues.Visible := True;
+ // Переведем НД в режим добавления записи, используя
+ // метод Append
+ DataModule2.T_goods_catalog.Append;
+ end;
+end;
+
+procedure TForm5.SpinCostValueChange(Sender: TObject);
+begin
+  ChkCostFilterClick(nil);
+end;
+
+end.
